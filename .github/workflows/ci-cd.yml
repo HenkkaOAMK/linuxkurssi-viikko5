@@ -41,7 +41,6 @@ jobs:
     needs: test
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    environment: production
     env:
       HOST: ${{ secrets.CPOUTA_HOST }}
       SSH_USER: ${{ secrets.CPOUTA_USER }}
