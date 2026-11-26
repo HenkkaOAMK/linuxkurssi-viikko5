@@ -111,23 +111,7 @@ https://github.com/HenkkaOAMK/linuxkurssi-viikko5
 
 <h2>Request Path</h2>
 
-<pre>
-Browser
-   |
-   v
-Nginx
-   |
-   v
-Gunicorn
-   |
-   v
-Flask
-  | \
-  |  \
-  |   --> Ollama
-  |
-  ---> MariaDB
-</pre>
+Browser -> Nginx -> Gunicorn -> Flask -> Ollama & MariaDB
 
 </div>
 
@@ -139,7 +123,7 @@ Flask
 <li>Ruff lint checks run automatically.</li>
 <li>Pytest tests run automatically.</li>
 <li>Shell scripts are syntax checked.</li>
-<li>Successful pushes to main deploy automatically.</li>
+<li>Successful pushes to main goes automatically.</li>
 <li>Deployment is verified through /viikko5/health.</li>
 </ul>
 
@@ -155,15 +139,13 @@ Failed workflows prevented deployment when errors were found.
 <h2>Users, Database and Secrets</h2>
 
 <p>
-The application runs as Linux user <code>chatapp</code>.
-A dedicated MariaDB database and user named <code>chatapp</code> were created for the application.
+The application runs as Linux user chatapp.
+A dedicated MariaDB database and user named chatapp were created for the application.
 </p>
 
 <p>
-Secrets are stored in:
+Secrets are stored in: /etc/chatapp/chatapp.env
 </p>
-
-<code>/etc/chatapp/chatapp.env</code>
 
 </div>
 
@@ -172,13 +154,9 @@ Secrets are stored in:
 <h2>Nginx Configuration</h2>
 
 <p>
-The application was added using a separate Nginx snippet:
+The application was added using a separate Nginx snippet:/etc/nginx/snippets/chatapp.conf
 </p>
 
-<code>/etc/nginx/snippets/chatapp.conf</code>
-
-<p>
-Only one include line was added to the existing Nginx configuration, allowing earlier assignments to continue working normally.
 </p>
 
 </div>
@@ -188,13 +166,7 @@ Only one include line was added to the existing Nginx configuration, allowing ea
 <h2>Model Choice</h2>
 
 <p>
-The selected model is:
-</p>
-
-<code>qwen2.5:0.5b</code>
-
-<p>
-The model was chosen because it uses relatively little memory while still providing useful responses.
+The selected model is: qwen2.5:0.5b
 </p>
 
 </div>
@@ -205,7 +177,7 @@ The model was chosen because it uses relatively little memory while still provid
 
 <p>
 The chat application was installed on Server A because chat messages require write access to MariaDB.
-Server B remains a read-only replica from Week 4.
+Server B is a read-only replica from Week 4.
 </p>
 
 </div>
@@ -217,11 +189,11 @@ Server B remains a read-only replica from Week 4.
 <ul>
 <li>/viikko5/ is publicly accessible → OK</li>
 <li>Local model replies to messages → OK</li>
-<li>Conversation survives page reload → OK</li>
+<li>Conversation is savedwhen page reloaded → OK</li>
 <li>New browser sessions start empty → OK</li>
 <li>Automatic deployment works → OK</li>
 <li>/viikko5/health returns commit SHA → OK</li>
-<li>Two successful deployments completed → OK</li>
+<li>More then two successful deployments completed → OK</li>
 <li>Failed workflows prevented deployment → OK</li>
 <li>Reboot test successful → OK</li>
 <li>Previous assignments still work → OK</li>
@@ -235,49 +207,41 @@ Server B remains a read-only replica from Week 4.
 
 <h3>Service User</h3>
 
-<pre>
+
 User=chatapp
 Group=chatapp
-</pre>
+
 
 <h3>Environment File Permissions</h3>
 
-<pre>
+
 -rw-r----- 1 root chatapp ... /etc/chatapp/chatapp.env
-</pre>
+
 
 <h3>Database Permissions</h3>
 
-<pre>
 GRANT SELECT, INSERT, UPDATE, DELETE,
 CREATE, INDEX, ALTER
 ON chatapp.* TO 'chatapp'@'localhost'
-</pre>
 
 <h3>Installed Model</h3>
 
-<pre>
 qwen2.5:0.5b
 397 MB
-</pre>
 
 <h3>Server Memory</h3>
 
-<pre>
 Memory: 7.6 GiB
 Available: 6.8 GiB
 Swap: 0 B
-</pre>
 
 <h3>Listening Services</h3>
 
-<pre>
 127.0.0.1:3306   MariaDB
 127.0.0.1:11434  Ollama
 127.0.0.1:5000   Flask
 0.0.0.0:80       Nginx
 0.0.0.0:22       SSH
-</pre>
 
 </div>
 
@@ -298,7 +262,7 @@ The issue was solved by creating a dedicated deployment key and configuring GitH
 <h2>What I Learned</h2>
 
 <p>
-During this assignment I learned how CI/CD pipelines work in practice and how GitHub Actions, Nginx, Gunicorn, MariaDB and a locally hosted language model can be combined into a working Linux web application.
+During this assignment I learned how CI/CD pipelines work.
 </p>
 
 </div>
