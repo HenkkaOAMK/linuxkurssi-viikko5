@@ -81,6 +81,8 @@ jobs:
 
       - name: Julkinen savutesti
         run: |
+          echo "HOST=$HOST"
+          curl -i "http://$HOST/viikko5/health"
           # Koko ketju: Nginx -> snippet /viikko5/ -> soketti -> Gunicorn -> Flask
           curl -fsS --retry 5 --retry-delay 3 "http://$HOST/viikko5/health" | grep -qx "${{ github.sha }}"
           curl -fsS "http://$HOST/viikko5/" | grep -q 'id="chat-form"'
