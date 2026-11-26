@@ -15,9 +15,6 @@
         <p class="chat__meta">Malli: <code>{{ model }}</code> · Nginx → Gunicorn/Flask → Ollama · MariaDB</p>
       </div>
       <button type="button" id="new-chat" class="btn btn--ghost">Uusi keskustelu</button>
-	<p>
-	    <a href="/viikko5/docs">Week 5 Documentation</a>
-	<p>
     </header>
 
     <section id="messages" class="chat__messages" aria-live="polite">
@@ -29,9 +26,10 @@
                 placeholder="Kirjoita viesti… (Enter lähettää, Shift+Enter rivinvaihto)" required></textarea>
       <button type="submit" id="send" class="btn">Lähetä</button>
     </form>
+        <p>
+	    <a href="/viikko5/docs">Week 5 Documentation</a>
+        </p>
   </main>
   <script src="{{ url_for('static', filename='app.js') }}"></script>
-<hr>
-
 </body>
 </html>
