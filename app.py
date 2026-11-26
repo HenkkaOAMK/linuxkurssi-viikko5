@@ -38,6 +38,10 @@ def _ndjson(obj: dict) -> str:
 def index():
     return render_template("index.html", model=OLLAMA_MODEL)
 
+@app.get("/docs")
+def docs():
+    return render_template("documentation.html")
+
 
 @app.get("/health")
 def health():
