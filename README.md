@@ -28,5 +28,5 @@ Files:
 - deploy/systemd/chatapp.service
 
 
-Passwords, private keys and other secrets are not stored in this repository.
+Passwords, private keys and any other secrets are not stored in this repository.
 
