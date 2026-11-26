@@ -173,17 +173,6 @@ The selected model is: qwen2.5:0.5b
 
 <div class="section">
 
-<h2>Replication</h2>
-
-<p>
-The chat application was installed on Server A because chat messages require write access to MariaDB.
-Server B is a read-only replica from Week 4.
-</p>
-
-</div>
-
-<div class="section">
-
 <h2>Test Results</h2>
 
 <ul>
@@ -208,40 +197,38 @@ Server B is a read-only replica from Week 4.
 <h3>Service User</h3>
 
 
-User=chatapp
-Group=chatapp
+<li>User=chatapp</li>
+<li>Group=chatapp</li>
 
 
 <h3>Environment File Permissions</h3>
 
 
--rw-r----- 1 root chatapp ... /etc/chatapp/chatapp.env
+<li>-rw-r----- 1 root chatapp ... /etc/chatapp/chatapp.env</li>
 
 
 <h3>Database Permissions</h3>
 
-GRANT SELECT, INSERT, UPDATE, DELETE,
-CREATE, INDEX, ALTER
-ON chatapp.* TO 'chatapp'@'localhost'
+<li>GRANT SELECT, INSERT, UPDATE, DELETE,CREATE, INDEX, ALTER ON chatapp.* TO 'chatapp'@'localhost'</li>
 
 <h3>Installed Model</h3>
 
-qwen2.5:0.5b
-397 MB
+<li>qwen2.5:0.5b</li>
+<li>397 MB</li>
 
 <h3>Server Memory</h3>
 
-Memory: 7.6 GiB
-Available: 6.8 GiB
-Swap: 0 B
+<li>Memory: 7.6 GiB</li>
+<li>Available: 6.8 GiB</li>
+<li>Swap: 0 B</li>
 
 <h3>Listening Services</h3>
 
-127.0.0.1:3306   MariaDB
-127.0.0.1:11434  Ollama
-127.0.0.1:5000   Flask
-0.0.0.0:80       Nginx
-0.0.0.0:22       SSH
+<li>127.0.0.1:3306   MariaDB</li>
+<li>127.0.0.1:11434  Ollama</li>
+<li>127.0.0.1:5000   Flask</li>
+<li>0.0.0.0:80       Nginx</li>
+<li>0.0.0.0:22       SSH</li>
 
 </div>
 
