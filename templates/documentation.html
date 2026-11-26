@@ -18,7 +18,7 @@
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1000px;
             margin: auto;
         }
 
@@ -41,44 +41,36 @@
             margin-bottom: 20px;
         }
 
-        ul {
-            line-height: 1.8;
-        }
-
         a {
             color: #66ff99;
         }
 
         a:hover {
-            color: #ffffff;
+            color: white;
         }
 
         code {
-            background-color: #222222;
-            color: #00ff66;
+            background-color: #222;
             padding: 2px 5px;
+            color: #00ff66;
         }
 
         pre {
             background-color: #111111;
-            color: #00ff66;
             border: 1px solid #00aa44;
-            padding: 15px;
+            padding: 12px;
             overflow-x: auto;
+            color: #00ff66;
         }
 
         .back-button {
             display: inline-block;
+            background: #00ff66;
             color: black;
-            background-color: #00ff66;
             text-decoration: none;
             font-weight: bold;
             padding: 10px 15px;
             margin-bottom: 20px;
-        }
-
-        .back-button:hover {
-            background-color: #66ff99;
         }
 
     </style>
@@ -91,44 +83,26 @@
 
 <a href="/viikko5/" class="back-button">← Back to Chat</a>
 
-<h1>Linux Week 5 Documentation</h1>
-
-<div class="section">
-
-<h2>Introduction</h2>
-
-<p>
-This project was completed as the Week 5 assignment of the Linux course.
-</p>
-
-<p>
-The goal was to create a web chat application which communicates with a locally hosted language model running on the server.
-</p>
-
-<p>
-Conversation history is stored in MariaDB and deployment is handled automatically by GitHub Actions.
-</p>
-
-</div>
+<h1>Week 5 Documentation</h1>
 
 <div class="section">
 
 <h2>Links</h2>
 
 <ul>
-
 <li>
 Chat:
-<a href="/viikko5/">/viikko5/</a>
+<a href="http://195.148.21.231/viikko5/">
+http://195.148.21.231/viikko5/
+</a>
 </li>
 
 <li>
-GitHub Repository:
+GitHub:
 <a href="https://github.com/HenkkaOAMK/linuxkurssi-viikko5">
 https://github.com/HenkkaOAMK/linuxkurssi-viikko5
 </a>
 </li>
-
 </ul>
 
 </div>
@@ -144,14 +118,15 @@ Browser
 Nginx
    |
    v
-Gunicorn (Unix Socket)
+Gunicorn
    |
    v
-Flask Application
-   |
-   +--> MariaDB
-   |
-   +--> Ollama LLM
+Flask
+  | \
+  |  \
+  |   --> Ollama
+  |
+  ---> MariaDB
 </pre>
 
 </div>
@@ -160,57 +135,35 @@ Flask Application
 
 <h2>CI/CD Pipeline</h2>
 
-<p>
-GitHub Actions is used for continuous integration and deployment.
-</p>
-
 <ul>
-
 <li>Ruff lint checks run automatically.</li>
-
-<li>Pytest automated tests run automatically.</li>
-
+<li>Pytest tests run automatically.</li>
 <li>Shell scripts are syntax checked.</li>
-
-<li>Successful pushes to main are deployed automatically.</li>
-
-<li>Deployment is verified through the /viikko5/health endpoint.</li>
-
+<li>Successful pushes to main deploy automatically.</li>
+<li>Deployment is verified through /viikko5/health.</li>
 </ul>
+
+<p>
+The pipeline successfully completed multiple deployments during development.
+Failed workflows prevented deployment when errors were found.
+</p>
 
 </div>
 
 <div class="section">
 
-<h2>Users and Permissions</h2>
+<h2>Users, Database and Secrets</h2>
 
 <p>
-Linux service user:
+The application runs as Linux user <code>chatapp</code>.
+A dedicated MariaDB database and user named <code>chatapp</code> were created for the application.
 </p>
-
-<code>chatapp</code>
-
-<p>
-Database:
-</p>
-
-<code>chatapp</code>
-
-<p>
-Database user:
-</p>
-
-<code>chatapp</code>
 
 <p>
 Secrets are stored in:
 </p>
 
 <code>/etc/chatapp/chatapp.env</code>
-
-<p>
-The environment file is readable only by root and the chatapp group.
-</p>
 
 </div>
 
@@ -219,35 +172,29 @@ The environment file is readable only by root and the chatapp group.
 <h2>Nginx Configuration</h2>
 
 <p>
-The application was added to the existing website using:
+The application was added using a separate Nginx snippet:
 </p>
 
 <code>/etc/nginx/snippets/chatapp.conf</code>
 
 <p>
-The following include line was added to the existing Nginx configuration:
-</p>
-
-<code>include snippets/chatapp.conf;</code>
-
-<p>
-Previous weekly assignments remain operational.
+Only one include line was added to the existing Nginx configuration, allowing earlier assignments to continue working normally.
 </p>
 
 </div>
 
 <div class="section">
 
-<h2>Model Selection</h2>
+<h2>Model Choice</h2>
 
 <p>
-Selected model:
+The selected model is:
 </p>
 
 <code>qwen2.5:0.5b</code>
 
 <p>
-The model was selected because it has low memory requirements and runs well on the available server resources.
+The model was chosen because it uses relatively little memory while still providing useful responses.
 </p>
 
 </div>
@@ -257,11 +204,8 @@ The model was selected because it has low memory requirements and runs well on t
 <h2>Replication</h2>
 
 <p>
-The application was installed on Server A because chat messages require database write access.
-</p>
-
-<p>
-Server B remains a read-only MariaDB replica from Week 4.
+The chat application was installed on Server A because chat messages require write access to MariaDB.
+Server B remains a read-only replica from Week 4.
 </p>
 
 </div>
@@ -271,27 +215,16 @@ Server B remains a read-only MariaDB replica from Week 4.
 <h2>Test Results</h2>
 
 <ul>
-
 <li>/viikko5/ is publicly accessible → OK</li>
-
-<li>Local Ollama model returns responses → OK</li>
-
-<li>Conversation history survives page reload → OK</li>
-
-<li>New browser session starts with empty conversation → OK</li>
-
-<li>GitHub Actions deploys automatically → OK</li>
-
-<li>/viikko5/health returns current commit SHA → OK</li>
-
-<li>At least two successful deployments completed → OK</li>
-
-<li>Failed workflow runs prevented deployment → OK</li>
-
-<li>Services restart correctly after reboot → OK</li>
-
-<li>Previous weekly assignments continue working → OK</li>
-
+<li>Local model replies to messages → OK</li>
+<li>Conversation survives page reload → OK</li>
+<li>New browser sessions start empty → OK</li>
+<li>Automatic deployment works → OK</li>
+<li>/viikko5/health returns commit SHA → OK</li>
+<li>Two successful deployments completed → OK</li>
+<li>Failed workflows prevented deployment → OK</li>
+<li>Reboot test successful → OK</li>
+<li>Previous assignments still work → OK</li>
 </ul>
 
 </div>
@@ -300,32 +233,50 @@ Server B remains a read-only MariaDB replica from Week 4.
 
 <h2>Server Evidence</h2>
 
-<p>
-The outputs below were collected from the server during testing.
-</p>
+<h3>Service User</h3>
 
 <pre>
-Paste systemctl status chatapp here
+User=chatapp
+Group=chatapp
 </pre>
 
-<pre>
-Paste systemctl show chatapp -p User -p Group here
-</pre>
+<h3>Environment File Permissions</h3>
 
 <pre>
-Paste SHOW GRANTS output here
+-rw-r----- 1 root chatapp ... /etc/chatapp/chatapp.env
 </pre>
 
-<pre>
-Paste ollama list output here
-</pre>
+<h3>Database Permissions</h3>
 
 <pre>
-Paste free -h output here
+GRANT SELECT, INSERT, UPDATE, DELETE,
+CREATE, INDEX, ALTER
+ON chatapp.* TO 'chatapp'@'localhost'
 </pre>
 
+<h3>Installed Model</h3>
+
 <pre>
-Paste sudo ss -ltnp output here
+qwen2.5:0.5b
+397 MB
+</pre>
+
+<h3>Server Memory</h3>
+
+<pre>
+Memory: 7.6 GiB
+Available: 6.8 GiB
+Swap: 0 B
+</pre>
+
+<h3>Listening Services</h3>
+
+<pre>
+127.0.0.1:3306   MariaDB
+127.0.0.1:11434  Ollama
+127.0.0.1:5000   Flask
+0.0.0.0:80       Nginx
+0.0.0.0:22       SSH
 </pre>
 
 </div>
@@ -335,11 +286,9 @@ Paste sudo ss -ltnp output here
 <h2>Problem Solved</h2>
 
 <p>
-Several deployment attempts initially failed because of SSH deployment key and GitHub Actions configuration issues.
-</p>
-
-<p>
-The problem was solved by creating a dedicated deployment key and correcting the GitHub Secrets configuration.
+The biggest issue during development was configuring GitHub Actions deployment.
+Several workflow runs failed because of SSH key and host verification problems.
+The issue was solved by creating a dedicated deployment key and configuring GitHub Secrets correctly.
 </p>
 
 </div>
@@ -349,11 +298,7 @@ The problem was solved by creating a dedicated deployment key and correcting the
 <h2>What I Learned</h2>
 
 <p>
-This assignment helped me understand how CI/CD pipelines work in practice.
-</p>
-
-<p>
-I learned how GitHub Actions, SSH deployment, Nginx, Gunicorn, MariaDB and a locally hosted language model can be combined into a working Linux web application.
+During this assignment I learned how CI/CD pipelines work in practice and how GitHub Actions, Nginx, Gunicorn, MariaDB and a locally hosted language model can be combined into a working Linux web application.
 </p>
 
 </div>
