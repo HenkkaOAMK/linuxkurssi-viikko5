@@ -109,6 +109,17 @@ https://github.com/HenkkaOAMK/linuxkurssi-viikko5
 
 <div class="section">
 
+<h2>Replication</h2>
+
+<p>
+The chat application was installed on Server A because the application needs write access to MariaDB.
+
+Server B remains a read-only replica from Week 4.
+
+</p>
+
+<div class="section">
+
 <h2>Request Path</h2>
 
 Browser -> Nginx -> Gunicorn -> Flask -> Ollama & MariaDB
@@ -154,7 +165,11 @@ Secrets are stored in: /etc/chatapp/chatapp.env
 <h2>Nginx Configuration</h2>
 
 <p>
-The application was added using a separate Nginx snippet:/etc/nginx/snippets/chatapp.conf
+The application was added using a separate Nginx snippet:
+
+/etc/nginx/snippets/chatapp.conf
+
+Only one include line was added to the existing Nginx site configuration. This allowed Week 2, Week 3 and Week 4 pages to continue working without modification.
 </p>
 
 </p>
